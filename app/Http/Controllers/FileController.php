@@ -17,7 +17,7 @@ class FileController extends Controller
     public function index()
     {
         $files = File::all()->sortByDesc('created_at');
-        return view('index', ['files' => $files]);
+        return view('index', ['file' => $files]);
     }
 
     /**
