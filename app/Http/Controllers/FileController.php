@@ -17,7 +17,7 @@ class FileController extends Controller
     public function index()
     {
         $files = File::all()->sortByDesc('created_at');
-        return view('index', ['file' => $files]);
+        return view('index', ['files' => $files]);
     }
 
     /**
@@ -38,20 +38,23 @@ class FileController extends Controller
      */
     public function store(Request $request)
     { {
-            return Validator::make($request, [
-                'description' => ['required', 'string', 'max:255'],
-                'photo' => ['required', 'image']
-            ]);
+            $this->validate(
+                $request,
+                [
+                    'description' => 'required|string|max:255',
+                    'photo' => 'required|image'
+                ]
+            );
         }
 
-
+        $path = $request->file('photo')->store('photos', 'public');
         $file = new File;
 
         $file->description = $request->description;
-        $file->photo = $request->photo;
+        $file->photo = $path;
 
         if (!$file->save()) return 'Error on save, please retry.';
         Session::flash('message', 'Votre photo à bien été enregistrée !');
-        return redirect('index');
+        return redirect('files');
     }
 }

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('test');
+    return view('create');
 });
 Route::get('files', [FileController::class, 'index']);
+Route::post('files', [FileController::class, 'store']);
